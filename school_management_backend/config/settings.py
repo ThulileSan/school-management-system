@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 SECRET_KEY = os.getenv("SECRET_KEY", "change-me")
-DEBUG = os.getenv("DEBUG", "False").strip().lower() == "true"
+DEBUG = os.getenv("DEBUG", "True").strip().lower() == "true"
 ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if h.strip()]
 
 INSTALLED_APPS = [
@@ -21,6 +21,9 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
+
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
 
     "accounts",
     "academics",
@@ -89,6 +92,7 @@ AUTH_USER_MODEL = "accounts.User"
 
 # DRF: Token auth + enforce authentication across API by default
 REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
     ],
@@ -99,3 +103,47 @@ REST_FRAMEWORK = {
 
 # CORS (dev)
 CORS_ALLOW_ALL_ORIGINS = True
+
+# drf-spectacular settings
+SPECTACULAR_SETTINGS = {
+    "TITLE": "School Management API",
+    "DESCRIPTION": """
+API documentation for the School Management System.
+
+**Authentication:**
+This API uses Django REST Framework Token Authentication.
+
+**Header format:**
+```
+Authorization: Token <your_token>
+```
+
+**Example:**
+```
+Authorization: Token d61a97081e2ffcc0ea525a67fc6456a890905d67
+```
+
+**Steps to authenticate:**
+1. POST to `/api/login/` with email and password to get a token
+2. Click "Authorize" button at the top of this page
+3. Enter: `Token <your_token>` (include the word "Token" followed by a space)
+4. Click "Authorize" and close the dialog
+5. All requests will now include the token header
+""",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+
+    # This enables the Authorize button to accept Token auth
+    "SECURITY": [{"tokenAuth": []}],
+    "COMPONENTS": {
+        "securitySchemes": {
+            "tokenAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "Authorization",
+                "description": "Token-based authentication with required prefix 'Token'. Example: Token <your_token>"
+            }
+        }
+    },
+}

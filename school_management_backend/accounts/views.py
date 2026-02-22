@@ -4,31 +4,32 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema
+
+from .serializers import LoginRequestSerializer, LoginResponseSerializer
 
 
 class LoginView(APIView):
-    permission_classes = [AllowAny]
+    authentication_classes = []  # login is public
+    permission_classes = []
 
+    @extend_schema(
+        request=LoginRequestSerializer,
+        responses={200: LoginResponseSerializer},
+        tags=["auth"],
+        summary="Login and get token",
+    )
     def post(self, request):
-        email = request.data.get("email")
-        password = request.data.get("password")
+        serializer = LoginRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-        if not email or not password:
-            return Response(
-                {"detail": "Email and password are required."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        email = serializer.validated_data["email"]
+        password = serializer.validated_data["password"]
 
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(request, username=email, password=password)
         if not user:
             return Response({"detail": "Invalid credentials."},
                             status=status.HTTP_401_UNAUTHORIZED)
 
-        if not user.is_active:
-            return Response({"detail": "User account is disabled."},
-                            status=status.HTTP_401_UNAUTHORIZED)
-
         token, _ = Token.objects.get_or_create(user=user)
         return Response({"token": token.key}, status=status.HTTP_200_OK)
-
-# check that commit is under the correct name ThuliSan

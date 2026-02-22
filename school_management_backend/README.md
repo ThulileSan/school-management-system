@@ -29,23 +29,51 @@
    ```
 
 ## Authentication
-POST /api/login/
+
+This API uses Django REST Framework Token Authentication.
+
+### Step 1: Login
+
+POST `/api/login/`
+
 Body:
 ```json
 {
-  "email": "admin@example.com",
-  "password": "..."
+  "email": "user@example.com",
+  "password": "yourpassword"
 }
 ```
+
 Response:
 ```json
-{ "token": "..." }
+{
+  "token": "d61a97081e2ffcc0ea525a67fc6456a890905d67"
+}
 ```
 
-Use the token for all other endpoints:
+### Step 2: Use Token
+
+All protected endpoints require this header:
+
 ```
-Authorization: Token <token>
+Authorization: Token <your_token>
 ```
+
+**Example:**
+```
+Authorization: Token d61a97081e2ffcc0ea525a67fc6456a890905d67
+```
+
+**Important:** Include the word "Token" followed by a space before your actual token.
+
+### Using Swagger UI
+
+1. Navigate to http://127.0.0.1:8000/api/docs/
+2. First, call the `/api/login/` endpoint to get your token
+3. Click the **Authorize** button at the top of the page
+4. Enter: `Token <your_token_here>` (with the word "Token" and a space)
+5. Click **Authorize** and close the dialog
+6. All requests will now automatically include the token header
 
 ## API Endpoints (CRUD via ViewSets)
 - Students: /api/students/
