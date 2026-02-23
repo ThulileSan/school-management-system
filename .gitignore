@@ -39,7 +39,7 @@ db.sqlite3
 .history/*
 
 # Miscellaneous
-/.angular/cache
+.angular/
 .sass-cache/
 /connect.lock
 /coverage
