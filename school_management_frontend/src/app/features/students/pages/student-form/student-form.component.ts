@@ -93,7 +93,6 @@ export class StudentFormComponent implements OnInit {
 
   onCourseChange(): void {
     this.filterSubjects();
-    // Clear subjects that don't belong to the new course
     const courseId = +this.studentForm.get('course')?.value;
     this.selectedSubjects = this.selectedSubjects.filter(id =>
       this.allSubjects.find(s => s.id === id && s.course === courseId)

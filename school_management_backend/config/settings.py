@@ -85,10 +85,8 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Custom user model (email-based auth)
 AUTH_USER_MODEL = "accounts.User"
 
-# DRF: Token auth + enforce authentication across API by default
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -99,11 +97,9 @@ REST_FRAMEWORK = {
     ],
 }
 
-# CORS
 CORS_ALLOWED_ORIGINS = [h.strip() for h in os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:4200").split(",") if h.strip()]
 CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "False").strip().lower() == "true"
 
-# drf-spectacular settings
 SPECTACULAR_SETTINGS = {
     "TITLE": "School Management API",
     "DESCRIPTION": """
@@ -133,7 +129,6 @@ Authorization: Token d61a97081e2ffcc0ea525a67fc6456a890905d67
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,
 
-    # This enables the Authorize button to accept Token auth
     "SECURITY": [{"tokenAuth": []}],
     "COMPONENTS": {
         "securitySchemes": {

@@ -91,15 +91,11 @@ Navigate to `http://localhost:4200`
 
 ## API Documentation
 
-Interactive Swagger UI available at: `http://127.0.0.1:8000/api/docs/`
+Interactive Swagger UI available at: `/api/docs/`
 
 ### Authentication
 
 **Login:** `POST /api/login/`
-
-```json
-{ "email": "admin@admin.com", "password": "admin12345" }
-```
 
 Returns: `{ "token": "<token>" }`
 
@@ -154,10 +150,20 @@ Tests cover:
 ## Admin Test Credentials
 
 ```
-Email: admin@admin.com
-Password: admin12345
+Email: thulile.d.sibiya@gmail.com
+Password: Dlmfun01
 ```
 
 ## Deployed Application
 
-Link: *(To be added after deployment)*
+**Live Application:** https://school-management-frontend-ccvr.onrender.com
+
+**Backend API:** https://school-management-api-backend.onrender.com/api/
+
+**API Documentation:** https://school-management-api-backend.onrender.com/api/docs/
+
+**Django Admin:** https://school-management-api-backend.onrender.com/admin/
+
+### Hosting Note
+
+⚠️ **Important:** This application is hosted on Render's free tier. The first request after 15 minutes of inactivity may take 30-60 seconds as the server spins up from sleep mode. Subsequent requests will be instant. This is normal behavior for free-tier hosting.
