@@ -1,0 +1,38 @@
+<div class="form-container">
+  <h2>{{ isEdit ? 'Edit Lecturer' : 'Create Lecturer' }}</h2>
+
+  <form [formGroup]="lecturerForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name *</label>
+        <input type="text" formControlName="first_name" />
+        <div class="error" *ngIf="lecturerForm.get('first_name')?.invalid && lecturerForm.get('first_name')?.touched">
+          First name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Last Name *</label>
+        <input type="text" formControlName="last_name" />
+        <div class="error" *ngIf="lecturerForm.get('last_name')?.invalid && lecturerForm.get('last_name')?.touched">
+          Last name is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email *</label>
+      <input type="email" formControlName="email" />
+      <div class="error" *ngIf="lecturerForm.get('email')?.invalid && lecturerForm.get('email')?.touched">
+        Valid email is required
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="goBack()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="lecturerForm.invalid || loading">
+        {{ loading ? 'Saving...' : (isEdit ? 'Update' : 'Create') }}
+      </button>
+    </div>
+  </form>
+</div>

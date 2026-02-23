@@ -1,0 +1,19 @@
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="logo">
+      <h3>School MS</h3>
+    </div>
+    <nav>
+      <a routerLink="/dashboard/students" routerLinkActive="active">Students</a>
+      <a routerLink="/dashboard/courses" routerLinkActive="active">Courses</a>
+      <a routerLink="/dashboard/lecturers" routerLinkActive="active">Lecturers</a>
+      <a routerLink="/dashboard/subjects" routerLinkActive="active">Subjects</a>
+    </nav>
+    <div class="logout">
+      <button (click)="logout()">Logout</button>
+    </div>
+  </aside>
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

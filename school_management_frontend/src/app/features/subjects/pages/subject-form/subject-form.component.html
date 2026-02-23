@@ -1,0 +1,68 @@
+<div class="form-container">
+  <h2>{{ isEdit ? 'Edit Subject' : 'Create Subject' }}</h2>
+
+  <form [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Subject Name *</label>
+      <input type="text" formControlName="name" />
+      <div class="error" *ngIf="subjectForm.get('name')?.invalid && subjectForm.get('name')?.touched">
+        Subject name is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <textarea formControlName="description" rows="3"></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Course *</label>
+        <select formControlName="course" (change)="onCourseChange()">
+          <option value="">Select a course</option>
+          <option *ngFor="let course of courses" [value]="course.id">{{ course.name }}</option>
+        </select>
+        <div class="error" *ngIf="subjectForm.get('course')?.invalid && subjectForm.get('course')?.touched">
+          Course is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Lecturer *</label>
+        <select formControlName="lecturer">
+          <option value="">Select a lecturer</option>
+          <option *ngFor="let lecturer of lecturers" [value]="lecturer.id">
+            {{ lecturer.first_name }} {{ lecturer.last_name }}
+          </option>
+        </select>
+        <div class="error" *ngIf="subjectForm.get('lecturer')?.invalid && subjectForm.get('lecturer')?.touched">
+          Lecturer is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Students</label>
+      <div class="checkbox-group">
+        <label *ngFor="let student of filteredStudents" class="checkbox-label">
+          <input
+            type="checkbox"
+            [checked]="isStudentSelected(student.id)"
+            (change)="toggleStudent(student.id)"
+            [disabled]="!subjectForm.get('course')?.value"
+          />
+          {{ student.first_name }} {{ student.last_name }} ({{ student.email }})
+        </label>
+      </div>
+      <small *ngIf="!subjectForm.get('course')?.value">Select a course first to see available students</small>
+      <small *ngIf="subjectForm.get('course')?.value && filteredStudents.length === 0">No students available in this course</small>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="goBack()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="subjectForm.invalid || loading">
+        {{ loading ? 'Saving...' : (isEdit ? 'Update' : 'Create') }}
+      </button>
+    </div>
+  </form>
+</div>

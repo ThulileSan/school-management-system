@@ -1,0 +1,31 @@
+<div class="page-header">
+  <h2>Students</h2>
+  <button class="btn-primary" (click)="createStudent()">+ Add Student</button>
+</div>
+
+<div class="table-container">
+  <app-loading-spinner *ngIf="loading" message="Loading students..."></app-loading-spinner>
+  <table *ngIf="!loading && students.length > 0">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Date of Birth</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students">
+        <td>{{ student.first_name }} {{ student.last_name }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.date_of_birth }}</td>
+        <td class="actions">
+          <button class="btn-view" (click)="viewStudent(student.id)">View</button>
+          <button class="btn-edit" (click)="editStudent(student.id)">Edit</button>
+          <button class="btn-delete" (click)="deleteStudent(student.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <app-no-data *ngIf="!loading && students.length === 0" message="No students found."></app-no-data>
+</div>

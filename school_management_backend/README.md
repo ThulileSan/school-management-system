@@ -97,3 +97,13 @@ Run:
 ```
 python manage.py test
 ```
+
+## Admin Test Credentials
+```
+Email: admin@admin.com
+Password: admin12345
+```
+*(Create this user via `python manage.py createsuperuser` if not already created)*
+
+## Deployed Application
+Link: *(To be added after deployment)*

@@ -1,0 +1,18 @@
+@use '../../../../shared/styles/detail-page' as *;
+
+.course-info h4 {
+  margin: 0;
+  color: #667eea;
+}
+
+.subject-list {
+  list-style: none;
+  padding: 0;
+}
+
+.subject-list li {
+  padding: 10px;
+  background: #f8f9fa;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}

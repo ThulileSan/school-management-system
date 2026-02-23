@@ -1,0 +1,15 @@
+@use '../../../../shared/styles/detail-page' as *;
+
+.list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-tag {
+  background: #667eea;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}

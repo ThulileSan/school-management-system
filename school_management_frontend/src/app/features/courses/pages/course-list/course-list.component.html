@@ -1,0 +1,31 @@
+<div class="page-header">
+  <h2>Courses</h2>
+  <button class="btn-primary" (click)="createCourse()">+ Add Course</button>
+</div>
+
+<div class="table-container">
+  <app-loading-spinner *ngIf="loading" message="Loading courses..."></app-loading-spinner>
+  <table *ngIf="!loading && courses.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let course of courses">
+        <td>{{ course.id }}</td>
+        <td>{{ course.name }}</td>
+        <td>{{ course.description }}</td>
+        <td class="actions">
+          <button class="btn-view" (click)="viewCourse(course.id)">View</button>
+          <button class="btn-edit" (click)="editCourse(course.id)">Edit</button>
+          <button class="btn-delete" (click)="deleteCourse(course.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <app-no-data *ngIf="!loading && courses.length === 0" message="No courses found."></app-no-data>
+</div>

@@ -131,3 +131,52 @@ class BackendAssessmentTests(APITestCase):
         }
         res = self.client.post("/api/subjects/", payload, format="json")
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_list_students(self):
+        Student.objects.create(
+            first_name="List", last_name="Test",
+            email="list@example.com", date_of_birth="2004-01-01",
+            course=self.course_a,
+        )
+        res = self.client.get("/api/students/")
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertGreaterEqual(len(res.data), 1)
+
+    def test_update_student(self):
+        student = Student.objects.create(
+            first_name="Old", last_name="Name",
+            email="update@example.com", date_of_birth="2004-01-01",
+            course=self.course_a,
+        )
+        res = self.client.put(f"/api/students/{student.id}/", {
+            "first_name": "New", "last_name": "Name",
+            "email": "update@example.com", "date_of_birth": "2004-01-01",
+            "course": self.course_a.id, "subjects": [],
+        }, format="json")
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data["first_name"], "New")
+
+    def test_delete_student(self):
+        student = Student.objects.create(
+            first_name="Del", last_name="Me",
+            email="delme@example.com", date_of_birth="2004-01-01",
+            course=self.course_a,
+        )
+        res = self.client.delete(f"/api/students/{student.id}/")
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Student.objects.filter(id=student.id).exists())
+
+    def test_update_student_course_clears_invalid_subjects(self):
+        """Changing course while having subjects from old course should fail."""
+        student = Student.objects.create(
+            first_name="Switch", last_name="Course",
+            email="switch@example.com", date_of_birth="2004-01-01",
+            course=self.course_a,
+        )
+        student.subjects.add(self.sub_a)
+        res = self.client.put(f"/api/students/{student.id}/", {
+            "first_name": "Switch", "last_name": "Course",
+            "email": "switch@example.com", "date_of_birth": "2004-01-01",
+            "course": self.course_b.id,
+        }, format="json")
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)

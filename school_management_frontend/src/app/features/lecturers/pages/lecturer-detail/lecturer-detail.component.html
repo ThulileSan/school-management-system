@@ -1,0 +1,30 @@
+<div class="detail-container" *ngIf="lecturer">
+  <div class="detail-header">
+    <h2>{{ lecturer.first_name }} {{ lecturer.last_name }}</h2>
+    <div class="actions">
+      <button class="btn-edit" (click)="editLecturer()">Edit</button>
+      <button class="btn-back" (click)="goBack()">Back</button>
+    </div>
+  </div>
+
+  <div class="detail-card">
+    <h3>Lecturer Information</h3>
+    <div class="info-grid">
+      <div class="info-item">
+        <label>Email</label>
+        <span>{{ lecturer.email }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-card">
+    <h3>Subjects Taught ({{ lecturer.subjects.length }})</h3>
+    <ul class="list" *ngIf="lecturer.subjects.length > 0">
+      <li *ngFor="let subject of lecturer.subjects">
+        <strong>{{ subject.name }}</strong>
+        <span class="course-tag">{{ subject.course.name }}</span>
+      </li>
+    </ul>
+    <p *ngIf="lecturer.subjects.length === 0" class="no-data">No subjects assigned.</p>
+  </div>
+</div>
