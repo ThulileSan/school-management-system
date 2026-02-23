@@ -45,7 +45,14 @@ venv\Scripts\activate          # Windows
 pip install -r requirements.txt
 ```
 
-Create a `.env` file (see `.env.example`):
+Copy the example environment file and update the values to match your local setup:
+
+```bash
+cp .env.example .env   # macOS/Linux
+copy .env.example .env # Windows
+```
+
+Edit `.env` with your PostgreSQL credentials:
 
 ```
 SECRET_KEY=your-secret-key
@@ -53,18 +60,22 @@ DEBUG=True
 ALLOWED_HOSTS=127.0.0.1,localhost
 DB_NAME=school_management
 DB_USER=postgres
-DB_PASSWORD=postgres
+DB_PASSWORD=your-password
 DB_HOST=localhost
-DB_PORT=5432
+DB_PORT=5433
 ```
 
 Create the PostgreSQL database, then run:
 
 ```bash
 python manage.py migrate
-python manage.py createsuperuser
+python manage.py create_admin
+python manage.py seed_data
 python manage.py runserver
 ```
+
+- `create_admin` creates the admin user automatically (see credentials below)
+- `seed_data` populates the database with sample courses, lecturers, subjects, and students
 
 ### Frontend Setup
 
