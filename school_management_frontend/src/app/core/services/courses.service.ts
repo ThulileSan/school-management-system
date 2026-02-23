@@ -9,25 +9,25 @@ import { Course, CourseDetail } from '../../models/course.model';
 })
 export class CoursesService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiBaseUrl}/courses`;
+  private apiUrl = `${environment.apiBaseUrl}/courses/`;
 
   getCourses(): Observable<Course[]> {
     return this.http.get<Course[]>(this.apiUrl);
   }
 
   getCourse(id: number): Observable<CourseDetail> {
-    return this.http.get<CourseDetail>(`${this.apiUrl}/${id}/`);
+    return this.http.get<CourseDetail>(`${this.apiUrl}${id}/`);
   }
 
   createCourse(course: Partial<Course>): Observable<Course> {
-    return this.http.post<Course>(this.apiUrl + '/', course);
+    return this.http.post<Course>(this.apiUrl, course);
   }
 
   updateCourse(id: number, course: Partial<Course>): Observable<Course> {
-    return this.http.put<Course>(`${this.apiUrl}/${id}/`, course);
+    return this.http.put<Course>(`${this.apiUrl}${id}/`, course);
   }
 
   deleteCourse(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}/`);
+    return this.http.delete<void>(`${this.apiUrl}${id}/`);
   }
 }

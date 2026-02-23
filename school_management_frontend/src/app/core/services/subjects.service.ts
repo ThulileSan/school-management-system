@@ -9,25 +9,25 @@ import { Subject, SubjectDetail } from '../../models/subject.model';
 })
 export class SubjectsService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiBaseUrl}/subjects`;
+  private apiUrl = `${environment.apiBaseUrl}/subjects/`;
 
   getSubjects(): Observable<Subject[]> {
     return this.http.get<Subject[]>(this.apiUrl);
   }
 
   getSubject(id: number): Observable<SubjectDetail> {
-    return this.http.get<SubjectDetail>(`${this.apiUrl}/${id}/`);
+    return this.http.get<SubjectDetail>(`${this.apiUrl}${id}/`);
   }
 
   createSubject(subject: Partial<Subject>): Observable<Subject> {
-    return this.http.post<Subject>(this.apiUrl + '/', subject);
+    return this.http.post<Subject>(this.apiUrl, subject);
   }
 
   updateSubject(id: number, subject: Partial<Subject>): Observable<Subject> {
-    return this.http.put<Subject>(`${this.apiUrl}/${id}/`, subject);
+    return this.http.put<Subject>(`${this.apiUrl}${id}/`, subject);
   }
 
   deleteSubject(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}/`);
+    return this.http.delete<void>(`${this.apiUrl}${id}/`);
   }
 }
