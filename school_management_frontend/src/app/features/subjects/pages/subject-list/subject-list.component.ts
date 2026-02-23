@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { SubjectsService } from '../../../../core/services/subjects.service';
 import { Subject } from '../../../../models/subject.model';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
@@ -9,7 +9,7 @@ import { NoDataComponent } from '../../../../shared/components/no-data/no-data.c
 @Component({
   selector: 'app-subject-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, LoadingSpinnerComponent, NoDataComponent],
+  imports: [CommonModule, LoadingSpinnerComponent, NoDataComponent],
   templateUrl: './subject-list.component.html',
   styleUrl: './subject-list.component.scss'
 })
@@ -36,6 +36,10 @@ export class SubjectListComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  viewSubject(id: number): void {
+    void this.router.navigate(['/dashboard/subjects', id]);
   }
 
   editSubject(id: number): void {

@@ -20,6 +20,7 @@
         <td>{{ subject.name }}</td>
         <td>{{ subject.description }}</td>
         <td class="actions">
+          <button class="btn-view" (click)="viewSubject(subject.id)">View</button>
           <button class="btn-edit" (click)="editSubject(subject.id)">Edit</button>
           <button class="btn-delete" (click)="deleteSubject(subject.id)">Delete</button>
         </td>

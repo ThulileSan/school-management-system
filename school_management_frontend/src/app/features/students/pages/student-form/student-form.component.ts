@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StudentsService } from '../../../../core/services/students.service';
 import { CoursesService } from '../../../../core/services/courses.service';
 import { SubjectsService } from '../../../../core/services/subjects.service';
@@ -12,7 +12,7 @@ import { Subject } from '../../../../models/subject.model';
 @Component({
   selector: 'app-student-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './student-form.component.html',
   styleUrl: './student-form.component.scss'
 })

@@ -1,13 +1,13 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LecturersService } from '../../../../core/services/lecturers.service';
 import { LecturerDetail } from '../../../../models/lecturer.model';
 
 @Component({
   selector: 'app-lecturer-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule],
   templateUrl: './lecturer-detail.component.html',
   styleUrl: './lecturer-detail.component.scss'
 })

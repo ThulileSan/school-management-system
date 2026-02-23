@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { StudentsService } from '../../../../core/services/students.service';
 import { Student } from '../../../../models/student.model';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
@@ -9,7 +9,7 @@ import { NoDataComponent } from '../../../../shared/components/no-data/no-data.c
 @Component({
   selector: 'app-student-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, LoadingSpinnerComponent, NoDataComponent],
+  imports: [CommonModule, LoadingSpinnerComponent, NoDataComponent],
   templateUrl: './student-list.component.html',
   styleUrl: './student-list.component.scss'
 })

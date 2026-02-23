@@ -1,14 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LecturersService } from '../../../../core/services/lecturers.service';
 import { Lecturer } from '../../../../models/lecturer.model';
 
 @Component({
   selector: 'app-lecturer-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './lecturer-form.component.html',
   styleUrl: './lecturer-form.component.scss'
 })

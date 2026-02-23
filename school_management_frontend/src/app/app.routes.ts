@@ -78,6 +78,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/subjects/pages/subject-form/subject-form.component').then(m => m.SubjectFormComponent)
       },
       {
+        path: 'subjects/:id',
+        loadComponent: () => import('./features/subjects/pages/subject-detail/subject-detail.component').then(m => m.SubjectDetailComponent)
+      },
+      {
         path: 'subjects/:id/edit',
         loadComponent: () => import('./features/subjects/pages/subject-form/subject-form.component').then(m => m.SubjectFormComponent)
       }
