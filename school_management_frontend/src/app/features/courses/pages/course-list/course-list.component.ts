@@ -1,10 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CoursesService } from '../../../../core/services/courses.service';
 import { Course } from '../../../../models/course.model';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 import { NoDataComponent } from '../../../../shared/components/no-data/no-data.component';
+import { SnackbarService } from '../../../../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-course-list',
@@ -16,9 +17,13 @@ import { NoDataComponent } from '../../../../shared/components/no-data/no-data.c
 export class CourseListComponent implements OnInit {
   private coursesService = inject(CoursesService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
+  private snackbar = inject(SnackbarService);
 
   courses: Course[] = [];
   loading = true;
+  currentPage = 1;
+  pageSize = 5;
 
   ngOnInit(): void {
     this.loadCourses();
@@ -30,12 +35,27 @@ export class CourseListComponent implements OnInit {
       next: (courses) => {
         this.courses = courses;
         this.loading = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Failed to load courses:', err);
         this.loading = false;
+        this.cdr.markForCheck();
       }
     });
+  }
+
+  get paginatedCourses(): Course[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.courses.slice(start, start + this.pageSize);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.courses.length / this.pageSize);
+  }
+
+  goToPage(page: number): void {
+    this.currentPage = page;
   }
 
   viewCourse(id: number): void {
@@ -53,10 +73,13 @@ export class CourseListComponent implements OnInit {
   deleteCourse(id: number): void {
     if (confirm('Are you sure you want to delete this course?')) {
       this.coursesService.deleteCourse(id).subscribe({
-        next: () => this.loadCourses(),
+        next: () => {
+          this.snackbar.success('Course deleted successfully.');
+          this.loadCourses();
+        },
         error: (err) => {
           console.error('Failed to delete course:', err);
-          alert(err.error?.detail || 'Failed to delete course. It may have enrolled students.');
+          this.snackbar.error(err.error?.detail || 'Failed to delete course. It may have enrolled students.');
         }
       });
     }

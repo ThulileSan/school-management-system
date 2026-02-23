@@ -1,0 +1,4 @@
+<div class="snackbar" *ngIf="visible" [ngClass]="message?.type" (click)="dismiss()">
+  <span>{{ message?.text }}</span>
+  <button class="dismiss">&times;</button>
+</div>

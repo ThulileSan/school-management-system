@@ -53,3 +53,30 @@ th {
 .btn-view { background: #3498db; color: white; }
 .btn-edit { background: #f39c12; color: white; }
 .btn-delete { background: #e74c3c; color: white; }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+
+  button {
+    padding: 6px 14px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+
+    &:hover:not(:disabled) { background: #f0f0f0; }
+    &:disabled { opacity: 0.4; cursor: default; }
+    &.active { background: #667eea; color: white; border-color: #667eea; }
+  }
+
+  .page-info {
+    font-size: 13px;
+    color: #666;
+    margin: 0 8px;
+  }
+}

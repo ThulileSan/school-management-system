@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { Subject, SubjectDetail } from '../../../../models/subject.model';
 import { Course } from '../../../../models/course.model';
 import { Lecturer } from '../../../../models/lecturer.model';
 import { Student } from '../../../../models/student.model';
+import { SnackbarService } from '../../../../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-subject-form',
@@ -26,6 +27,8 @@ export class SubjectFormComponent implements OnInit {
   private coursesService = inject(CoursesService);
   private lecturersService = inject(LecturersService);
   private studentsService = inject(StudentsService);
+  private cdr = inject(ChangeDetectorRef);
+  private snackbar = inject(SnackbarService);
 
   subjectForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
@@ -58,14 +61,14 @@ export class SubjectFormComponent implements OnInit {
 
   loadCourses(): void {
     this.coursesService.getCourses().subscribe({
-      next: (courses) => this.courses = courses,
+      next: (courses) => { this.courses = courses; this.cdr.markForCheck(); },
       error: (err) => console.error('Failed to load courses:', err)
     });
   }
 
   loadLecturers(): void {
     this.lecturersService.getLecturers().subscribe({
-      next: (lecturers) => this.lecturers = lecturers,
+      next: (lecturers) => { this.lecturers = lecturers; this.cdr.markForCheck(); },
       error: (err) => console.error('Failed to load lecturers:', err)
     });
   }
@@ -75,6 +78,7 @@ export class SubjectFormComponent implements OnInit {
       next: (students) => {
         this.allStudents = students;
         this.filterStudents();
+        this.cdr.markForCheck();
       },
       error: (err) => console.error('Failed to load students:', err)
     });
@@ -91,6 +95,7 @@ export class SubjectFormComponent implements OnInit {
         });
         this.selectedStudents = subject.students.map(s => s.id);
         this.filterStudents();
+        this.cdr.markForCheck();
       },
       error: (err) => console.error('Failed to load subject:', err)
     });
@@ -148,8 +153,9 @@ export class SubjectFormComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
+        this.cdr.markForCheck();
         console.error('Failed to save subject:', err);
-        alert(err.error?.detail || 'Failed to save subject. Please try again.');
+        this.snackbar.error(err.error?.detail || 'Failed to save subject. Please try again.');
       }
     });
   }

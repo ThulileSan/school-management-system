@@ -1,9 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LecturersService } from '../../../../core/services/lecturers.service';
 import { Lecturer } from '../../../../models/lecturer.model';
+import { SnackbarService } from '../../../../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-lecturer-form',
@@ -17,6 +18,8 @@ export class LecturerFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private lecturersService = inject(LecturersService);
+  private cdr = inject(ChangeDetectorRef);
+  private snackbar = inject(SnackbarService);
 
   lecturerForm: FormGroup = this.fb.group({
     first_name: ['', Validators.required],
@@ -66,8 +69,9 @@ export class LecturerFormComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
+        this.cdr.markForCheck();
         console.error('Failed to save lecturer:', err);
-        alert(err.error?.detail || 'Failed to save lecturer. Please try again.');
+        this.snackbar.error(err.error?.detail || 'Failed to save lecturer. Please try again.');
       }
     });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubjectsService } from '../../../../core/services/subjects.service';
@@ -15,6 +15,7 @@ export class SubjectDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private subjectsService = inject(SubjectsService);
+  private cdr = inject(ChangeDetectorRef);
 
   subject: SubjectDetail | null = null;
 
@@ -27,7 +28,7 @@ export class SubjectDetailComponent implements OnInit {
 
   loadSubject(id: number): void {
     this.subjectsService.getSubject(id).subscribe({
-      next: (subject) => this.subject = subject,
+      next: (subject) => { this.subject = subject; this.cdr.markForCheck(); },
       error: (err) => console.error('Failed to load subject:', err)
     });
   }

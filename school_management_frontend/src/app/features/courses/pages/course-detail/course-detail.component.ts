@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from '../../../../core/services/courses.service';
@@ -15,6 +15,7 @@ export class CourseDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private coursesService = inject(CoursesService);
+  private cdr = inject(ChangeDetectorRef);
 
   course: CourseDetail | null = null;
 
@@ -27,7 +28,7 @@ export class CourseDetailComponent implements OnInit {
 
   loadCourse(id: number): void {
     this.coursesService.getCourse(id).subscribe({
-      next: (course) => this.course = course,
+      next: (course) => { this.course = course; this.cdr.markForCheck(); },
       error: (err) => console.error('Failed to load course:', err)
     });
   }

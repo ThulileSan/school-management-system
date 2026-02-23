@@ -1,9 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from '../../../../core/services/courses.service';
 import { Course } from '../../../../models/course.model';
+import { SnackbarService } from '../../../../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-course-form',
@@ -17,6 +18,8 @@ export class CourseFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private coursesService = inject(CoursesService);
+  private cdr = inject(ChangeDetectorRef);
+  private snackbar = inject(SnackbarService);
 
   courseForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
@@ -64,8 +67,9 @@ export class CourseFormComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
+        this.cdr.markForCheck();
         console.error('Failed to save course:', err);
-        alert(err.error?.detail || 'Failed to save course. Please try again.');
+        this.snackbar.error(err.error?.detail || 'Failed to save course. Please try again.');
       }
     });
   }

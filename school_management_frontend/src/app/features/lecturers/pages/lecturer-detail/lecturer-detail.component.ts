@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LecturersService } from '../../../../core/services/lecturers.service';
@@ -15,6 +15,7 @@ export class LecturerDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private lecturersService = inject(LecturersService);
+  private cdr = inject(ChangeDetectorRef);
 
   lecturer: LecturerDetail | null = null;
 
@@ -27,7 +28,7 @@ export class LecturerDetailComponent implements OnInit {
 
   loadLecturer(id: number): void {
     this.lecturersService.getLecturer(id).subscribe({
-      next: (lecturer) => this.lecturer = lecturer,
+      next: (lecturer) => { this.lecturer = lecturer; this.cdr.markForCheck(); },
       error: (err) => console.error('Failed to load lecturer:', err)
     });
   }

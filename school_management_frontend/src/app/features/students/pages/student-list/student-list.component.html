@@ -15,7 +15,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let student of students">
+      <tr *ngFor="let student of paginatedStudents">
         <td>{{ student.first_name }} {{ student.last_name }}</td>
         <td>{{ student.email }}</td>
         <td>{{ student.date_of_birth }}</td>
@@ -27,5 +27,13 @@
       </tr>
     </tbody>
   </table>
+  <div class="pagination" *ngIf="!loading && totalPages > 1">
+    <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+    <button *ngFor="let page of [].constructor(totalPages); let i = index"
+            [class.active]="currentPage === i + 1"
+            (click)="goToPage(i + 1)">{{ i + 1 }}</button>
+    <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+    <span class="page-info">{{ students.length }} total</span>
+  </div>
   <app-no-data *ngIf="!loading && students.length === 0" message="No students found."></app-no-data>
 </div>

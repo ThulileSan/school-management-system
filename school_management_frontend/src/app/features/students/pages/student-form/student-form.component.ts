@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { SubjectsService } from '../../../../core/services/subjects.service';
 import { Student, StudentDetail } from '../../../../models/student.model';
 import { Course } from '../../../../models/course.model';
 import { Subject } from '../../../../models/subject.model';
+import { SnackbarService } from '../../../../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-student-form',
@@ -23,6 +24,8 @@ export class StudentFormComponent implements OnInit {
   private studentsService = inject(StudentsService);
   private coursesService = inject(CoursesService);
   private subjectsService = inject(SubjectsService);
+  private cdr = inject(ChangeDetectorRef);
+  private snackbar = inject(SnackbarService);
 
   studentForm: FormGroup = this.fb.group({
     first_name: ['', Validators.required],
@@ -54,7 +57,7 @@ export class StudentFormComponent implements OnInit {
 
   loadCourses(): void {
     this.coursesService.getCourses().subscribe({
-      next: (courses) => this.courses = courses,
+      next: (courses) => { this.courses = courses; this.cdr.markForCheck(); },
       error: (err) => console.error('Failed to load courses:', err)
     });
   }
@@ -64,6 +67,7 @@ export class StudentFormComponent implements OnInit {
       next: (subjects) => {
         this.allSubjects = subjects;
         this.filterSubjects();
+        this.cdr.markForCheck();
       },
       error: (err) => console.error('Failed to load subjects:', err)
     });
@@ -81,6 +85,7 @@ export class StudentFormComponent implements OnInit {
         });
         this.selectedSubjects = student.subjects.map(s => s.id);
         this.filterSubjects();
+        this.cdr.markForCheck();
       },
       error: (err) => console.error('Failed to load student:', err)
     });
@@ -137,8 +142,9 @@ export class StudentFormComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
+        this.cdr.markForCheck();
         console.error('Failed to save student:', err);
-        alert(err.error?.detail || 'Failed to save student. Please try again.');
+        this.snackbar.error(err.error?.detail || 'Failed to save student. Please try again.');
       }
     });
   }
