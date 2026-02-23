@@ -70,18 +70,19 @@ export class SubjectListComponent implements OnInit {
     void this.router.navigate(['/dashboard/subjects', 'new']);
   }
 
-  deleteSubject(id: number): void {
-    if (confirm('Are you sure you want to delete this subject?')) {
-      this.subjectsService.deleteSubject(id).subscribe({
-        next: () => {
-          this.snackbar.success('Subject deleted successfully.');
-          this.loadSubjects();
-        },
-        error: (err) => {
-          console.error('Failed to delete subject:', err);
-          this.snackbar.error(err.error?.detail || 'Failed to delete subject.');
-        }
-      });
-    }
+  async deleteSubject(id: number): Promise<void> {
+    const confirmed = await this.snackbar.confirm('Are you sure you want to delete this subject?');
+    if (!confirmed) return;
+
+    this.subjectsService.deleteSubject(id).subscribe({
+      next: () => {
+        this.snackbar.success('Subject deleted successfully.');
+        this.loadSubjects();
+      },
+      error: (err) => {
+        console.error('Failed to delete subject:', err);
+        this.snackbar.error(err.error?.detail || 'Failed to delete subject.');
+      }
+    });
   }
 }

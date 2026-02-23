@@ -65,6 +65,7 @@ export class LecturerFormComponent implements OnInit {
 
     request.subscribe({
       next: () => {
+        this.snackbar.success(this.isEdit ? 'Lecturer updated successfully.' : 'Lecturer created successfully.');
         void this.router.navigate(['/dashboard/lecturers']);
       },
       error: (err) => {

@@ -138,6 +138,7 @@ export class StudentFormComponent implements OnInit {
 
     request.subscribe({
       next: () => {
+        this.snackbar.success(this.isEdit ? 'Student updated successfully.' : 'Student created successfully.');
         void this.router.navigate(['/dashboard/students']);
       },
       error: (err) => {

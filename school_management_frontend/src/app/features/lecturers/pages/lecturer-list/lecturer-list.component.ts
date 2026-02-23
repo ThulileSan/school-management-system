@@ -70,18 +70,19 @@ export class LecturerListComponent implements OnInit {
     void this.router.navigate(['/dashboard/lecturers', 'new']);
   }
 
-  deleteLecturer(id: number): void {
-    if (confirm('Are you sure you want to delete this lecturer?')) {
-      this.lecturersService.deleteLecturer(id).subscribe({
-        next: () => {
-          this.snackbar.success('Lecturer deleted successfully.');
-          this.loadLecturers();
-        },
-        error: (err) => {
-          console.error('Failed to delete lecturer:', err);
-          this.snackbar.error(err.error?.detail || 'Failed to delete lecturer. They may be assigned to subjects.');
-        }
-      });
-    }
+  async deleteLecturer(id: number): Promise<void> {
+    const confirmed = await this.snackbar.confirm('Are you sure you want to delete this lecturer?');
+    if (!confirmed) return;
+
+    this.lecturersService.deleteLecturer(id).subscribe({
+      next: () => {
+        this.snackbar.success('Lecturer deleted successfully.');
+        this.loadLecturers();
+      },
+      error: (err) => {
+        console.error('Failed to delete lecturer:', err);
+        this.snackbar.error(err.error?.detail || 'Failed to delete lecturer. They may be assigned to subjects.');
+      }
+    });
   }
 }

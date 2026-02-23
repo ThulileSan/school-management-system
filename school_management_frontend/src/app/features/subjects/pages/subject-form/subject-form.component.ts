@@ -149,6 +149,7 @@ export class SubjectFormComponent implements OnInit {
 
     request.subscribe({
       next: () => {
+        this.snackbar.success(this.isEdit ? 'Subject updated successfully.' : 'Subject created successfully.');
         void this.router.navigate(['/dashboard/subjects']);
       },
       error: (err) => {

@@ -69,18 +69,19 @@ export class StudentListComponent implements OnInit {
     void this.router.navigate(['/dashboard/students', 'new']);
   }
 
-  deleteStudent(id: number): void {
-    if (confirm('Are you sure you want to delete this student?')) {
-      this.studentsService.deleteStudent(id).subscribe({
-        next: () => {
-          this.snackbar.success('Student deleted successfully.');
-          this.loadStudents();
-        },
-        error: (err) => {
-          console.error('Failed to delete student:', err);
-          this.snackbar.error(err.error?.detail || 'Failed to delete student.');
-        }
-      });
-    }
+  async deleteStudent(id: number): Promise<void> {
+    const confirmed = await this.snackbar.confirm('Are you sure you want to delete this student?');
+    if (!confirmed) return;
+
+    this.studentsService.deleteStudent(id).subscribe({
+      next: () => {
+        this.snackbar.success('Student deleted successfully.');
+        this.loadStudents();
+      },
+      error: (err) => {
+        console.error('Failed to delete student:', err);
+        this.snackbar.error(err.error?.detail || 'Failed to delete student.');
+      }
+    });
   }
 }

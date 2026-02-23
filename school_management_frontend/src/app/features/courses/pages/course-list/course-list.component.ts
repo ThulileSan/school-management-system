@@ -70,18 +70,19 @@ export class CourseListComponent implements OnInit {
     void this.router.navigate(['/dashboard/courses', 'new']);
   }
 
-  deleteCourse(id: number): void {
-    if (confirm('Are you sure you want to delete this course?')) {
-      this.coursesService.deleteCourse(id).subscribe({
-        next: () => {
-          this.snackbar.success('Course deleted successfully.');
-          this.loadCourses();
-        },
-        error: (err) => {
-          console.error('Failed to delete course:', err);
-          this.snackbar.error(err.error?.detail || 'Failed to delete course. It may have enrolled students.');
-        }
-      });
-    }
+  async deleteCourse(id: number): Promise<void> {
+    const confirmed = await this.snackbar.confirm('Are you sure you want to delete this course?');
+    if (!confirmed) return;
+
+    this.coursesService.deleteCourse(id).subscribe({
+      next: () => {
+        this.snackbar.success('Course deleted successfully.');
+        this.loadCourses();
+      },
+      error: (err) => {
+        console.error('Failed to delete course:', err);
+        this.snackbar.error(err.error?.detail || 'Failed to delete course. It may have enrolled students.');
+      }
+    });
   }
 }

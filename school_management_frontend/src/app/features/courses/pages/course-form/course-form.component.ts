@@ -63,6 +63,7 @@ export class CourseFormComponent implements OnInit {
 
     request.subscribe({
       next: () => {
+        this.snackbar.success(this.isEdit ? 'Course updated successfully.' : 'Course created successfully.');
         void this.router.navigate(['/dashboard/courses']);
       },
       error: (err) => {

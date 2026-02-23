@@ -2,3 +2,13 @@
   <span>{{ message?.text }}</span>
   <button class="dismiss">&times;</button>
 </div>
+
+<div class="confirm-overlay" *ngIf="confirmVisible">
+  <div class="confirm-box">
+    <p>{{ confirmData?.text }}</p>
+    <div class="confirm-actions">
+      <button class="btn-cancel" (click)="onCancel()">Cancel</button>
+      <button class="btn-confirm" (click)="onConfirm()">Confirm</button>
+    </div>
+  </div>
+</div>
