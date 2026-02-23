@@ -3,6 +3,10 @@
   <button class="btn-primary" (click)="createLecturer()">+ Add Lecturer</button>
 </div>
 
+<div class="search-bar" *ngIf="!loading && lecturers.length > 0">
+  <input type="text" placeholder="Search by name or email..." [(ngModel)]="searchTerm" (ngModelChange)="onSearch()">
+</div>
+
 <div class="table-container">
   <app-loading-spinner *ngIf="loading" message="Loading lecturers..."></app-loading-spinner>
   <table *ngIf="!loading && lecturers.length > 0">

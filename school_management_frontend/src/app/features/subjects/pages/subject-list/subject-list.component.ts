@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SubjectsService } from '../../../../core/services/subjects.service';
 import { Subject } from '../../../../models/subject.model';
@@ -10,7 +11,7 @@ import { SnackbarService } from '../../../../shared/services/snackbar.service';
 @Component({
   selector: 'app-subject-list',
   standalone: true,
-  imports: [CommonModule, LoadingSpinnerComponent, NoDataComponent],
+  imports: [CommonModule, FormsModule, LoadingSpinnerComponent, NoDataComponent],
   templateUrl: './subject-list.component.html',
   styleUrl: './subject-list.component.scss'
 })
@@ -23,7 +24,8 @@ export class SubjectListComponent implements OnInit {
   subjects: Subject[] = [];
   loading = true;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 8;
+  searchTerm = '';
 
   ngOnInit(): void {
     this.loadSubjects();
@@ -33,7 +35,7 @@ export class SubjectListComponent implements OnInit {
     this.loading = true;
     this.subjectsService.getSubjects().subscribe({
       next: (subjects) => {
-        this.subjects = subjects;
+        this.subjects = subjects.sort((a, b) => a.name.localeCompare(b.name));
         this.loading = false;
         this.cdr.markForCheck();
       },
@@ -45,13 +47,26 @@ export class SubjectListComponent implements OnInit {
     });
   }
 
+  get filteredSubjects(): Subject[] {
+    if (!this.searchTerm.trim()) return this.subjects;
+    const term = this.searchTerm.toLowerCase();
+    return this.subjects.filter(s =>
+      s.name.toLowerCase().includes(term) ||
+      s.description.toLowerCase().includes(term)
+    );
+  }
+
   get paginatedSubjects(): Subject[] {
     const start = (this.currentPage - 1) * this.pageSize;
-    return this.subjects.slice(start, start + this.pageSize);
+    return this.filteredSubjects.slice(start, start + this.pageSize);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.subjects.length / this.pageSize);
+    return Math.ceil(this.filteredSubjects.length / this.pageSize);
+  }
+
+  onSearch(): void {
+    this.currentPage = 1;
   }
 
   goToPage(page: number): void {

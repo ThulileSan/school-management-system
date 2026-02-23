@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StudentsService } from '../../../../core/services/students.service';
 import { Student } from '../../../../models/student.model';
@@ -10,7 +11,7 @@ import { SnackbarService } from '../../../../shared/services/snackbar.service';
 @Component({
   selector: 'app-student-list',
   standalone: true,
-  imports: [CommonModule, LoadingSpinnerComponent, NoDataComponent],
+  imports: [CommonModule, FormsModule, LoadingSpinnerComponent, NoDataComponent],
   templateUrl: './student-list.component.html',
   styleUrl: './student-list.component.scss'
 })
@@ -23,7 +24,8 @@ export class StudentListComponent implements OnInit {
   students: Student[] = [];
   loading = true;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 8;
+  searchTerm = '';
 
   ngOnInit(): void {
     this.loadStudents();
@@ -33,7 +35,9 @@ export class StudentListComponent implements OnInit {
     this.loading = true;
     this.studentsService.getStudents().subscribe({
       next: (students) => {
-        this.students = students;
+        this.students = students.sort((a, b) =>
+          `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`)
+        );
         this.loading = false;
         this.cdr.markForCheck();
       },
@@ -44,13 +48,26 @@ export class StudentListComponent implements OnInit {
     });
   }
 
+  get filteredStudents(): Student[] {
+    if (!this.searchTerm.trim()) return this.students;
+    const term = this.searchTerm.toLowerCase();
+    return this.students.filter(s =>
+      `${s.first_name} ${s.last_name}`.toLowerCase().includes(term) ||
+      s.email.toLowerCase().includes(term)
+    );
+  }
+
   get paginatedStudents(): Student[] {
     const start = (this.currentPage - 1) * this.pageSize;
-    return this.students.slice(start, start + this.pageSize);
+    return this.filteredStudents.slice(start, start + this.pageSize);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.students.length / this.pageSize);
+    return Math.ceil(this.filteredStudents.length / this.pageSize);
+  }
+
+  onSearch(): void {
+    this.currentPage = 1;
   }
 
   goToPage(page: number): void {
