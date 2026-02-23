@@ -158,11 +158,9 @@ Password: Dlmfun01
 
 **Live Application:** https://school-management-frontend-ccvr.onrender.com
 
-**Backend API:** https://school-management-api-backend.onrender.com/api/
+**API Documentation (Swagger):** https://school-management-api-backend.onrender.com/api/docs/
 
-**API Documentation:** https://school-management-api-backend.onrender.com/api/docs/
-
-**Django Admin:** https://school-management-api-backend.onrender.com/admin/
+**Django Admin Panel:** https://school-management-api-backend.onrender.com/admin/
 
 ### Hosting Note
 
