@@ -102,7 +102,7 @@ Navigate to `http://localhost:4200`
 
 ## API Documentation
 
-Interactive Swagger UI available at: `/api/docs/`
+Interactive Swagger UI available at: `http://127.0.0.1:8000/api/docs/`
 
 ### Authentication
 
