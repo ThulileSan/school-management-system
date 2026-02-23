@@ -87,7 +87,7 @@ Navigate to `http://localhost:4200`
 | `DB_USER` | PostgreSQL user | `postgres` |
 | `DB_PASSWORD` | PostgreSQL password | `postgres` |
 | `DB_HOST` | Database host | `localhost` |
-| `DB_PORT` | Database port | `5432` |
+| `DB_PORT` | Database port | `5433` |
 
 ## API Documentation
 
