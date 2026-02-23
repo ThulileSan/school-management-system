@@ -27,4 +27,14 @@
     </ul>
     <p *ngIf="lecturer.subjects.length === 0" class="no-data">No subjects assigned.</p>
   </div>
+
+  <div class="detail-card">
+    <h3>Courses ({{ lecturer.courses.length }})</h3>
+    <ul class="list" *ngIf="lecturer.courses.length > 0">
+      <li *ngFor="let course of lecturer.courses">
+        {{ course.name }}
+      </li>
+    </ul>
+    <p *ngIf="lecturer.courses.length === 0" class="no-data">No courses linked.</p>
+  </div>
 </div>
