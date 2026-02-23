@@ -38,6 +38,7 @@ export class StudentFormComponent implements OnInit {
   isEdit = false;
   studentId: number | null = null;
   loading = false;
+  maxDate = new Date().toISOString().split('T')[0];
   courses: Course[] = [];
   allSubjects: Subject[] = [];
   filteredSubjects: Subject[] = [];

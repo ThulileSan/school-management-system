@@ -30,7 +30,7 @@
 
     <div class="form-group">
       <label>Date of Birth *</label>
-      <input type="date" formControlName="date_of_birth" />
+      <input type="date" formControlName="date_of_birth" [max]="maxDate" />
       <div class="error" *ngIf="studentForm.get('date_of_birth')?.invalid && studentForm.get('date_of_birth')?.touched">
         Date of birth is required
       </div>
