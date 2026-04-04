@@ -161,8 +161,8 @@ Tests cover:
 ## Admin Test Credentials
 
 ```
-Email: thulile.d.sibiya@gmail.com
-Password: Dlmfun01
+Email: test.admin@schoolmanagement.app
+Password: SecurePass123!
 ```
 
 ## Deployed Application

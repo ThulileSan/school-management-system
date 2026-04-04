@@ -6,8 +6,8 @@ class Command(BaseCommand):
     help = 'Create admin user if it does not exist'
 
     def handle(self, *args, **options):
-        email = 'thulile.d.sibiya@gmail.com'
-        password = 'Dlmfun01'
+        email = 'test.admin@schoolmanagement.app'
+        password = 'SecurePass123!'
         
         if User.objects.filter(email=email).exists():
             self.stdout.write(self.style.WARNING(f'Admin user {email} already exists'))
